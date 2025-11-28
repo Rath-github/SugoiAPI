@@ -74,3 +74,6 @@ Providers são em resumo os provedores dos links que você acessa para assistir 
 caso seu serviço/site/api esteja sendo utilizado como um provider e você deseja que ele seja removido, por favor entre em contato comigo através do email: pedrocruzpessoa16@gail.com que farei
 a remoção do mesmo de imediato, caso você deseja consumir a api consulte a [documentação de providers](https://github.com/yzPeedro/SugoiAPI/wiki/Providers).
 
+## Como Contribuir
+
+Para contribuir para o projeto verifique a documentação em [Contribuição](https://github.com/yzPeedro/SugoiAPI/wiki/Contribui%C3%A7%C3%A3o).
