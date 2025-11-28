@@ -8,7 +8,7 @@ interface MediaProviderRulesInterface
 {
     public function canUsePrefix(): bool;
 
-    public function canUserSuffix(): bool;
+    public function canUseSuffix(): bool;
 
     public function mustSerializeEpisode(): bool;
 

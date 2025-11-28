@@ -56,7 +56,7 @@ class AnimesOnlineCCProvider implements MediaProviderInterface, MediaProviderPro
         return true;
     }
 
-    public function canUserSuffix(): bool
+    public function canUseSuffix(): bool
     {
         return true;
     }

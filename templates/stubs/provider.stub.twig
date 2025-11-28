@@ -2,21 +2,21 @@
 
 namespace App\Providers;
 
-use App\Providers\Contracts\HandleResponseInterface;
-use App\Providers\Contracts\MediaProviderInterface;
-use App\Providers\Contracts\MediaProviderPropertiesInterface;
-use App\Providers\Contracts\MediaProviderRulesInterface;
 use App\Support\Traits\SearchEngine;
+use App\Providers\Contracts\{
+    MediaProviderInterface,
+    MediaProviderPropertiesInterface,
+    MediaProviderRulesInterface,
+    {% if MUST_HANDLE_RESPONSE %}HandleResponseInterface{% endif %}
+};
 use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\HttpFoundation\Response;
 
-class AnimeFireProvider implements MediaProviderInterface, MediaProviderPropertiesInterface, MediaProviderRulesInterface, HandleResponseInterface
+class {{ CLASS_NAME }} implements MediaProviderInterface, MediaProviderPropertiesInterface, MediaProviderRulesInterface{% if MUST_HANDLE_RESPONSE %}, HandleResponseInterface {% endif %}
+
 {
     use SearchEngine;
 
-    public const BASE_URL = 'https://animefire.plus/video/';
-
-    private array $responseData = [];
+    public const BASE_URL = '{{ BASE_URL }}';
 
     public function searchEpisode(int $episodeNumber, int $season, string $slug): array
     {
@@ -25,22 +25,22 @@ class AnimeFireProvider implements MediaProviderInterface, MediaProviderProperti
 
     public function isEmbed(): bool
     {
-        return false;
+        return {{ IS_EMBED }};
     }
 
     public function hasAds(): bool
     {
-        return false;
+        return {{ HAS_ADS }};
     }
 
     public function name(): string
     {
-        return 'Anime Fire';
+        return '{{ PROVIDER_NAME }}';
     }
 
     public function slug(): string
     {
-        return 'anime-fire';
+        return '{{ PROVIDER_SLUG }}';
     }
 
     public function baseUrl(): string
@@ -50,45 +50,43 @@ class AnimeFireProvider implements MediaProviderInterface, MediaProviderProperti
 
     public function searchRequestMethod(): string
     {
-        return 'GET';
+        return '{{ SEARCH_REQUEST_METHOD }}';
     }
 
     public function getSearchEpisodeEndpoint(int $episode, int $season, string $slug): string
     {
-        return self::BASE_URL.$slug."/$episode";
+        return self::BASE_URL;
     }
 
     public function canUsePrefix(): bool
     {
-        return true;
+        return {{ CAN_USE_PREFIX }};
     }
 
     public function canUseSuffix(): bool
     {
-        return true;
+        return {{ CAN_USE_SUFFIX }};
     }
 
     public function mustSerializeEpisode(): bool
     {
-        return false;
+        return {{ MUST_SERIALIZE_EPISODE }};
     }
 
     public function mustHandleResponse(): bool
     {
-        return true;
+        return {{ MUST_HANDLE_RESPONSE }};
     }
 
     public function responseHasError(ResponseInterface $response): bool
     {
-        $json = json_decode($response->getBody()->getContents(), true);
-
-        $this->responseData = $json['data'];
-
-        return Response::HTTP_INTERNAL_SERVER_ERROR == $json['response']['status'];
+        return false;
     }
 
+{% if MUST_HANDLE_RESPONSE %}
     public function handleResponse(ResponseInterface $response): string
     {
-        return $this->responseData[0]['src'];
+        return 'url-to-video';
     }
+{% endif %}
 }
