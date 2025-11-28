@@ -60,7 +60,7 @@ class SuperflixProvider implements MediaProviderInterface, MediaProviderProperti
         return false;
     }
 
-    public function canUserSuffix(): bool
+    public function canUseSuffix(): bool
     {
         return false;
     }
