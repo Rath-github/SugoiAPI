@@ -69,7 +69,11 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+        "test": "phpunit",
+        "test:coverage": "phpunit --coverage-html coverage/",
+        "cs:check": "php-cs-fixer fix --dry-run --diff",
+        "cs:fix": "php-cs-fixer fix"
     },
     "conflict": {
         "symfony/symfony": "*"

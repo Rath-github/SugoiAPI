@@ -1,0 +1,193 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Sugoi API",
+    "description": "API desenvolvida para assistir animes legendados sem anúncios",
+    "version": "2.3.2",
+    "contact": {
+      "name": "yzPeedro",
+      "url": "https://github.com/yzPeedro/SugoiAPI"
+    },
+    "license": {
+      "name": "Proprietary"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Local development server"
+    },
+    {
+      "url": "https://api.sugoi.example.com",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/episode/{slug}/{season}/{episodeNumber}": {
+      "get": {
+        "summary": "Search for an episode",
+        "description": "Search for a specific anime episode across all registered providers",
+        "operationId": "searchEpisode",
+        "tags": [
+          "Episodes"
+        ],
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "description": "The anime slug (e.g., 'naruto', 'attack-on-titan')",
+            "schema": {
+              "type": "string",
+              "example": "naruto"
+            }
+          },
+          {
+            "name": "season",
+            "in": "path",
+            "required": true,
+            "description": "The season number",
+            "schema": {
+              "type": "integer",
+              "example": 1,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "episodeNumber",
+            "in": "path",
+            "required": true,
+            "description": "The episode number",
+            "schema": {
+              "type": "integer",
+              "example": 1,
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved episode data from providers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EpisodeResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Episode not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "EpisodeResponse": {
+        "type": "object",
+        "properties": {
+          "provider": {
+            "type": "string",
+            "description": "Name of the provider",
+            "example": "Anime Fire"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Anime slug",
+            "example": "naruto"
+          },
+          "season": {
+            "type": "integer",
+            "description": "Season number",
+            "example": 1
+          },
+          "episode": {
+            "type": "integer",
+            "description": "Episode number",
+            "example": 1
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Direct link to the episode",
+            "example": "https://animefire.plus/video/naruto/1/1"
+          },
+          "quality": {
+            "type": "string",
+            "description": "Video quality",
+            "enum": ["360p", "480p", "720p", "1080p"],
+            "example": "720p"
+          },
+          "has_ads": {
+            "type": "boolean",
+            "description": "Whether the provider shows ads",
+            "example": true
+          },
+          "is_embed": {
+            "type": "boolean",
+            "description": "Whether the content is embedded",
+            "example": false
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message",
+            "example": "Episode not found"
+          },
+          "status": {
+            "type": "integer",
+            "description": "HTTP status code",
+            "example": 404
+          }
+        }
+      }
+    },
+    "securitySchemes": {}
+  },
+  "tags": [
+    {
+      "name": "Episodes",
+      "description": "Episode search and retrieval operations"
+    }
+  ]
+}

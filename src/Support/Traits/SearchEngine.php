@@ -20,7 +20,7 @@ trait SearchEngine
             $this->getSearchEpisodeEndpoint($episodeNumber, $season, $slug),
         ];
 
-        if (!$this->canUsePrefix() && !$this->canUserSuffix()) {
+        if (!$this->canUsePrefix() && !$this->canUseSuffix()) {
             return $endpoints;
         }
 
@@ -30,7 +30,7 @@ trait SearchEngine
             }
         }
 
-        if ($this->canUserSuffix() && $this->mustUseSuffixes()) {
+        if ($this->canUseSuffix() && $this->mustUseSuffixes()) {
             foreach (Media::COMMON_SUFFIXES as $suffix) {
                 $endpoints[] = $this->getSearchEpisodeEndpoint($episodeNumber, $season, "$slug-$suffix");
             }
